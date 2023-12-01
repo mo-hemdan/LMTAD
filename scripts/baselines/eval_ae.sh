@@ -6,13 +6,13 @@ cd ${root_dir}
 # porto
 architecture="gmvae" # dae, vae, gmvae
 
-dataset="pol" # porto, pol, trial0
+dataset="porto" # porto, pol
 
 if [[ "${dataset}" == "porto" ]] ; then
     # # ae porto
     dae=""
     vae=""
-    gmvae=""
+    gmvae="results/gmvae/porto/outlier_False_dim_h_1024_dim_z_128_dim_emb_768/ckpt_epoch_0.pt"
 
     model_file_path="${dae},${vae},${gmvae}"
 
