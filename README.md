@@ -10,7 +10,7 @@ We used python venv and the code was tested on ```python >= 3.9.9```.
 Download the dataset from https://www.kaggle.com/c/pkdd-15-predict-taxi-service-trajectory-i/data
 
 Unzip the folder to ```$PORTO_ROOT``` where ```$PORTO_ROOT```  is a directory that will contain the porto dataset
-run the following (takes about 8 minutes):
+run the following from the ```code``` folder (takes about 8 minutes):
 ```
 python preprocess/preprocess_porto.py --data_dir $"{PORTO_ROOT} 
 ```
@@ -19,8 +19,8 @@ python preprocess/preprocess_porto.py --data_dir $"{PORTO_ROOT}
 
 Download the data from https://osf.io/s4bje/
 
-Unzip the folder to ```$POL_ROOT``` where ```$POL_ROOT```  is a directory that will contain the pattern of life dataset
-run the following (takes about 25 minutes):
+Unzip the folder to ```$POL_ROOT``` where ```$POL_ROOT```  is a directory that will contain the pattern of life dataset.
+Run the following from the ```code``` folder (takes about 25 minutes) :
 ```
 python preprocess/preprocess_pol.py --data_dir $"{POL_ROOT} 
 ```
@@ -30,7 +30,7 @@ python preprocess/preprocess_pol.py --data_dir $"{POL_ROOT}
 #### LM-TAD
 To train the LMTAD model, run the following command from the root directory
 ```
-sh /scripts/LMTAD/train.sh
+sh scripts/LMTAD/train.sh
 ```
 You can change the ```dataset``` variable to either ```pol``` or ```porto``` to run the training on respective dataset
 
