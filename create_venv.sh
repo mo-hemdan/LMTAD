@@ -1,7 +1,4 @@
 #!/bin/bash
-module load gnu10/10.3.0-ya
-module load python/3.9.9-jh
-
 HOME_DIR="."
 
 cd $HOME_DIR
@@ -12,5 +9,4 @@ pip install tqdm pandas matplotlib seaborn --no-cache-dir
 pip install -U scikit-learn --no-cache-dir
 
 pip install 
-
 pip install -e .

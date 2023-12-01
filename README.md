@@ -37,3 +37,14 @@ To train the baseline models, run the following commands from the root directory
 sh scripts/baselines/train_ae.sh
 ```
 The variables ```dataset``` and ```model_type``` control the dataset and the model to run respectively. The ```model_type``` options are ```dae, vae, gmvae```
+
+### EVALUATION
+
+#### LM-TAD
+To evaluate the LMTAD model on the POL dataset, run ```sh scripts/LMTAD/eval_lm.sh```
+To evaluate the LMTAD model on the porto dataset, run ```sh scripts/LMTAD/eval_porto.sh```
+
+#### BASELINES
+To evaluate the baseline models on the POL dataset, run ```scripts/baselines/eval_ae.sh```
+You need to provide the model path to in the eval_ae.sh file. See an example in that file. 
+Adjust the vaiables in the eval_ae.sh file as needed
