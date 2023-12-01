@@ -98,7 +98,7 @@ def main(args):
     device  = "cuda" if torch.cuda.is_available() else "cpu"
     
     if args.dataset == "pol":
-
+        args.include_outliers = True
         args.features = args.features.split(",")
         features_folder_name = save_file_name_pattern_of_life(args.features)
 
@@ -131,6 +131,7 @@ def main(args):
         
         
     elif args.dataset == "porto":
+        args.include_outliers = False
         dataset_config = PortoConfig()
         # config.file_name = "porto_processed_max_length_300"
             

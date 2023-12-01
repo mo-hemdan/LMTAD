@@ -2,7 +2,7 @@
 
 
 #data arguments
-dataset="pol" # porto, pol
+dataset="porto" # porto, pol
 
 
 batch_size=64
@@ -60,7 +60,7 @@ elif [[ "${dataset}" == "trial0" ]]; then
 
 fi
 
-root_dir="../../code"
+root_dir="./code"
 cd ${root_dir}
 
 python train_ae.py \
@@ -69,4 +69,4 @@ python train_ae.py \
     --out_dir ${out_dir} --output_file_name ${output_file_name} \
     --max_iters ${max_iters} --log_interval ${log_interval} --model_type ${model_type}\
     --block_size ${block_size} --nlayers ${nlayers} --dim_h ${dim_h} --dim_emb ${dim_emb} --dim_z ${dim_z} --dropout ${dropout} \
-    --lr ${lr} --grad_clip ${grad_clip} --save_all_ckpts --include_outliers --debug
+    --lr ${lr} --grad_clip ${grad_clip} --save_all_ckpts --debug

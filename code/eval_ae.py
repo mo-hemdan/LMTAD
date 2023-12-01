@@ -6,6 +6,7 @@ from collections import  defaultdict
 from pathlib import Path
 
 from tqdm import tqdm
+import numpy as np
 import pandas as pd
 import torch
 from torch.utils.data import DataLoader
@@ -18,6 +19,13 @@ from datasets import (POLConfig,
 from models import DAE, VAE, AEConfig, GMSVAE, GMSVAEConfig
 from meter import AverageMeter
 from utils import log, seed_all
+
+from plot_utils import (plot_agent_surprisal_rate, 
+                        plot_metrics_pattern_of_life, 
+                        plot_agent_perlexity_over_date)
+
+from plot_utils import (plot_metrics, 
+                        load_tsvs)
 
 
 def get_parser():
@@ -134,7 +142,9 @@ def save_results(results, out_dir, output_file_name):
             f"{out_dir}/{output_file_name}.tsv", #'_').
             index=False,
             sep="\t"
-        )
+        )    
+    return df_to_save
+
 def main(eval_args):
     """eval main method"""
 
@@ -143,6 +153,9 @@ def main(eval_args):
     model_paths = eval_args.model_file_path.split(",")
     
     for model_path in tqdm(model_paths, desc="model"):
+        if model_path == "":
+            continue
+
         print(f"model path: {model_path}")
         checkpoint = torch.load(model_path, map_location=device)
         args = checkpoint["args"]
@@ -196,13 +209,21 @@ def main(eval_args):
                 
                     results, output_file_name = eval_porto(dataset_config, model, model_path, device, args.model_type)
 
-                    save_results(results, out_dir, output_file_name)
+                    df_to_save = save_results(results, out_dir, output_file_name)
+
+            dfs = load_tsvs(out_dir)
+            plot_metrics(dfs, "rec_loss", out_dir)
 
         elif eval_args.dataset == "pol":
             results, output_file_name = eval_pattern_of_life(dataset_config, model, model_path, device, args.model_type )
 
-            save_results(results, out_dir, output_file_name)
+            df_to_save = save_results(results, out_dir, output_file_name)
 
+            df_to_save["date"] = pd.to_datetime(df_to_save["date"])
+            df_to_save["id"] = df_to_save.user_id.str.split("_").str[1].astype(int)
+            df_to_save["outlier_label"] =   np.where(df_to_save["outlier"] == "non outlier", 0, 1)
+            results = plot_metrics_pattern_of_life(df_to_save, "rec_loss", out_dir)
+            filtered_data = plot_agent_perlexity_over_date(df_to_save, "rec_loss", out_dir)
 
 if __name__ == "__main__":
     seed_all(123)

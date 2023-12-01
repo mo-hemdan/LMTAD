@@ -47,7 +47,7 @@ elif [[ "${dataset}" == "pol" ]]; then
 
 fi
 
-root_dir="../../code"
+root_dir="./code"
 cd ${root_dir}
 python train_LMTAD.py \
     --data_dir ${data_dir} --data_file_name ${data_file_name} --dataset ${dataset} --outlier_days ${outlier_days} \
