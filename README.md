@@ -1,5 +1,8 @@
 # LM-TAD
 
+### Python environment
+The ```create_venv.sh``` has the instruction on how to create an environment to run the experiments in this repository. 
+We used python venv and the code was tested on ```python >= 3.9.9```.
 
 ### Data Preprocessing
 
@@ -41,7 +44,7 @@ The variables ```dataset``` and ```model_type``` control the dataset and the mod
 ### EVALUATION
 
 #### LM-TAD
-To evaluate the LMTAD model on the POL dataset, run ```sh scripts/LMTAD/eval_lm.sh```
+To evaluate the LMTAD model on the POL dataset, run ```sh scripts/LMTAD/eval_lm.sh```.
 To evaluate the LMTAD model on the porto dataset, run ```sh scripts/LMTAD/eval_porto.sh```
 
 #### BASELINES
