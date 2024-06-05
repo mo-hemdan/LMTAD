@@ -40,7 +40,9 @@ def main(
 
     lat_grid_num = int((boundary['max_lat'] - boundary['min_lat']) / lat_size) + 1
     lng_grid_num = int((boundary['max_lng'] - boundary['min_lng']) / lng_size) + 1
-
+    
+    # import ipdb
+    # ipdb.set_trace()
     trajectories = pd.read_csv(data_file_path, header=0, index_col="TRIP_ID")
 
     processed_trajectories = defaultdict(list)

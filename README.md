@@ -9,10 +9,10 @@ We used python venv and the code was tested on ```python >= 3.9.9```.
 #### Porto Dataset
 Download the dataset from https://www.kaggle.com/c/pkdd-15-predict-taxi-service-trajectory-i/data
 
-Unzip the folder to ```$PORTO_ROOT``` where ```$PORTO_ROOT```  is a directory that will contain the porto dataset
+Unzip data and find the ```train.csv```. Set the variable ```$PORTO_DATA_FILE``` to the path of the ```train.csv``` that contains the porto data
 run the following from the ```code``` folder (takes about 8 minutes):
 ```
-python preprocess/preprocess_porto.py --data_dir $"{PORTO_ROOT} 
+python preprocess/preprocess_porto.py --data_dir "${PORTO_ROOT}"
 ```
 
 #### Pattern of Life dataset
@@ -20,9 +20,17 @@ python preprocess/preprocess_porto.py --data_dir $"{PORTO_ROOT}
 Download the data from https://osf.io/s4bje/
 
 Unzip the folder to ```$POL_ROOT``` where ```$POL_ROOT```  is a directory that will contain the pattern of life dataset.
+To reproduce the results we have in the paper, unzip the work-outliers and checkin-atl.zip files. Inside the $POL_ROOT folder, you need to have the following
+file structure
+
+```
+$POL_ROOT
+    -work-outliers
+        checkin-atl.tsv
+```
 Run the following from the ```code``` folder (takes about 25 minutes) :
 ```
-python preprocess/preprocess_pol.py --data_dir $"{POL_ROOT} 
+python preprocess/preprocess_pol.py --data_dir "${POL_ROOT}"
 ```
 
 ### Training
