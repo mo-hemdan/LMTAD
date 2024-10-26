@@ -1,3 +1,5 @@
+# [SIGSPATIAL 2024] Trajectory Anomaly Detection with Language Models
+This is a PyTorch implementation of [Trajectory Anomaly Detection with Language Models](https://arxiv.org/pdf/2409.15366)  for trajectory anomaly detection (LM-TAD)
 # LM-TAD
 
 ### Python environment
