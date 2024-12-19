@@ -27,6 +27,9 @@ def get_parser():
     """argparse arguments"""
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_file_path", type=str, default="")
+    parser.add_argument("--area_dif", type=str, default='no')
+    parser.add_argument("--testing_data_model_file_path", type=str, default='')
+    parser.add_argument("--device", type=str, default='cuda')
 
     args = parser.parse_args()
     return args
@@ -178,17 +181,17 @@ def eval_porto(model, device, dataset_config=None, dataloader=None):
     return results
 
 def main(eval_args):
-    device  = "cuda" if torch.cuda.is_available() else "cpu"
+    device  = eval_args.device if torch.cuda.is_available() else "cpu"
     dtype = 'bfloat16' if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else 'float16' # 'float32' or 'bfloat16' or 'float16'
 
     # torch.manual_seed(seed)
     # torch.cuda.manual_seed(seed)
     torch.backends.cuda.matmul.allow_tf32 = True # allow tf32 on matmul
     torch.backends.cudnn.allow_tf32 = True # allow tf32 on cudnn
-    device_type = 'cuda' if 'cuda' in device else 'cpu' # for later use in torch.autocast
+    device_type = eval_args.device if 'cuda' in device else 'cpu' # for later use in torch.autocast
     ptdtype = {'float32': torch.float32, 'bfloat16': torch.bfloat16, 'float16': torch.float16}[dtype]
     ctx = nullcontext() if device_type == 'cpu' else torch.amp.autocast(device_type=device_type, dtype=ptdtype)
-
+    print("DEVICE: ", device, ' and ', device_type)
     print(f"model path: {eval_args.model_file_path}")
     checkpoint = torch.load(eval_args.model_file_path, map_location=device)
     args = checkpoint["args"]
@@ -205,12 +208,20 @@ def main(eval_args):
     model.load_state_dict(state_dict)
     model.eval()
     model.to(device)
-    dataset_config = checkpoint["dataset_config"]
+    
+    
+    if eval_args.area_dif == 'yes':
+        dataset_checkpoint = torch.load(eval_args.testing_data_model_file_path, map_location=device)
+    else: dataset_checkpoint = checkpoint
+    dataset_config = dataset_checkpoint["dataset_config"]
     dataset_config.logging = False
+    
+    
 
     if dataset_config.include_outliers:
         
         out_dir = f"./eval_results/{'/'.join(args.out_dir.split('/')[2:])}"
+        
         out_dir += "/include_outliers"
         print(f"outdir {out_dir}")
         os.makedirs(out_dir, exist_ok=True)
@@ -247,7 +258,7 @@ def main(eval_args):
 
         # ratio, level, prob
         outlier_parameters = [
-            [0.05, 3, 0.1],
+            # [0.05, 3, 0.1],
             [0.05, 3, 0.3],
             [0.05, 5, 0.1]
         ]
@@ -260,11 +271,13 @@ def main(eval_args):
             dataset_config.outliers_list = ["route_switch", "detour"]
 
             out_dir = f"./eval_results/{'/'.join(args.out_dir.split('/')[2:])}"
+            if eval_args.area_dif == 'yes': 
+                out_dir += '/porto1'
             print(f"outdir {out_dir}")
             os.makedirs(out_dir, exist_ok=True)
 
             dataset = PortoDataset(dataset_config)
-            dataloader = DataLoader(dataset, batch_size=128, collate_fn=dataset.collate)
+            dataloader = DataLoader(dataset, batch_size=512, collate_fn=dataset.collate)
 
             results = defaultdict(list)
 

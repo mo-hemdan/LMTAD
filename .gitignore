@@ -11,4 +11,6 @@ code/LMTAD.*
 code/results
 
 create_venv_local.sh
-
+code/datasets
+code/data
+pkdd-15-predict-taxi-service-trajectory-i.zip

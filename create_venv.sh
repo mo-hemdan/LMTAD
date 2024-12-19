@@ -2,7 +2,7 @@
 HOME_DIR="."
 
 cd $HOME_DIR
-python -m venv venv
+python3  -m venv venv
 source venv/bin/activate
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118 --no-cache-dir
 pip install tqdm pandas matplotlib seaborn --no-cache-dir

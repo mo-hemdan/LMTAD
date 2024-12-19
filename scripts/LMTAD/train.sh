@@ -1,4 +1,4 @@
-#!bin/sh
+#!/bin/bash
 
 dataset="porto" # pol, porto
 batch_size=32
@@ -25,14 +25,15 @@ decay_lr=True
 grad_clip=1.0
 
 if [[ "${dataset}" == "porto" ]] ; then
-    
+    data_folder="./data/porto2"
     data_dir="./data"
     data_file_name="porto_processed"
-    out_dir="./results/LMTAD/porto"
+    out_dir="./results/LMTAD/porto2"
     outlier_days=0
     output_file_name=None
     features="no_features"
     grid_leng=25
+    device='cuda:2'
 
 elif [[ "${dataset}" == "pol" ]]; then
 
@@ -50,11 +51,11 @@ fi
 root_dir="./code"
 cd ${root_dir}
 python train_LMTAD.py \
-    --data_dir ${data_dir} --data_file_name ${data_file_name} --dataset ${dataset} --outlier_days ${outlier_days} \
+    --data_folder ${data_folder} --data_dir ${data_dir} --data_file_name ${data_file_name} --dataset ${dataset} --outlier_days ${outlier_days} \
     --features ${features} --batch_size ${batch_size} --grid_leng ${grid_leng} \
     --out_dir ${out_dir} --output_file_name ${output_file_name} \
     --eval_interval ${eval_interval} --log_interval ${log_interval} --max_iters ${max_iters} \
     --block_size ${block_size} --n_layer ${n_layer} --n_head ${n_head} --n_embd ${n_embd} --dropout ${dropout} \
     --lr_decay_iters ${lr_decay_iters} --beta1 ${beta1} --beta2 ${beta1} --min_lr ${min_lr} --lr ${lr} \
     --warmup_iters ${warmup_iters} --weight_decay ${weight_decay} --decay_lr ${decay_lr} --grad_clip ${grad_clip} \
-    --debug
+    --debug --device=${device}

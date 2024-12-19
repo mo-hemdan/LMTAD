@@ -43,6 +43,8 @@ from metrics import get_metrics, get_per_user_metrics
 def get_parser():
     """argparse arguments"""
     parser = argparse.ArgumentParser()
+    parser.add_argument('--device', type=str, default='cuda:0')
+    parser.add_argument('--data_folder', type=str, default='porto')
     parser.add_argument('--data_dir', type=str, default='')
     parser.add_argument('--data_file_name', type=str, default='data')
     parser.add_argument('--batch_size', type=int, default=64)
@@ -208,8 +210,8 @@ def model_eval(args,
 
 def main(args):
     """train orchastration"""
-
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    
+    device = args.device if torch.cuda.is_available() else "cpu"
 
     dtype = 'bfloat16' if torch.cuda.is_available() and torch.cuda.is_bf16_supported() else 'float16' # 'float32', 'bfloat16', or 'float16', the latter will 
     ptdtype = {'float32': torch.float32, 'bfloat16': torch.bfloat16, 'float16': torch.float16}[dtype]
@@ -260,6 +262,7 @@ def main(args):
         args.include_outliers = False
 
         dataset_config = PortoConfig()
+        dataset_config.data_dir = args.data_folder
         dataset_config.file_name = args.data_file_name
         dataset_config.outlier_level = 5
         dataset_config.outlier_prob = 0.1

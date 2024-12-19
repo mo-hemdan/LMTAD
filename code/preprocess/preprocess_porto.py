@@ -123,6 +123,7 @@ def main(
     for outlier_config in outlier_configs:
 
         dataset_config = PortoConfig(
+            data_dir=f"{out_dir}",
             outlier_ratio=outlier_config[0],
             outlier_level=outlier_config[1],
             outlier_prob=outlier_config[2],
